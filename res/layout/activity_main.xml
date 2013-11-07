@@ -30,6 +30,12 @@
         android:orientation="horizontal" >
 
         <Button
+            android:id="@+id/first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/first" />
+
+        <Button
             android:id="@+id/before"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,19 +52,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/after" />
+
+        <Button
+            android:id="@+id/last"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/volumeControl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/controlButton"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/volumeShow" />
+
+        <SeekBar
+            android:id="@+id/volume"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/volumeValue"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/controlButton" >
+        android:layout_below="@id/volumeControl" >
     </ListView>
+
     <TextView
         android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/controlButton"
+        android:layout_below="@id/volumeControl"
         android:background="#FF0000"
         android:text="No data" />
 

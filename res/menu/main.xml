@@ -6,4 +6,25 @@
         android:showAsAction="never"
         android:title="@string/action_settings"/>
 
+    <group
+        android:id="@+id/playMode"
+        android:menuCategory="container" >
+        <item
+            android:id="@+id/oneCycle"
+            android:showAsAction="ifRoom"
+            android:title="@string/oneCycle"/>
+        <item
+            android:id="@+id/listCycle"
+            android:showAsAction="ifRoom"
+            android:title="@string/listCycle"/>
+        <item
+            android:id="@+id/listSeq"
+            android:showAsAction="ifRoom"
+            android:title="@string/listSeq"/>
+         <item
+            android:id="@+id/random"
+            android:showAsAction="ifRoom"
+            android:title="@string/listSeq"/>
+    </group>
+
 </menu>

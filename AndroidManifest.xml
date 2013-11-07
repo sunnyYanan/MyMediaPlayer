@@ -7,6 +7,10 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
+     <!-- 监听电话呼出 -->  
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>  
+    <!-- 监听电话状态改变 -->  
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />  
 
     <application
         android:allowBackup="true"
