@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,11 +30,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class MainActivity extends ListActivity {
+	private static final int REQUESTCODE = 1;
+	private static final String MUSICFILEPATH = "path";
 	Button previous, play, next, first, last;
 	ListView list;
 	SeekBar sb, volume;
@@ -45,6 +49,7 @@ public class MainActivity extends ListActivity {
 	List<String> fileName;
 	List<String> filePath;
 	List<Map<String, String>> fileList;
+	String selectFilePath;
 	int playMode = 1;
 	AudioManager am;
 	int currentVolume;
@@ -154,7 +159,8 @@ public class MainActivity extends ListActivity {
 	 */
 	private final class MyPhoneStateListener extends PhoneStateListener {
 		public void onCallStateChanged(int state, String incomingNumber) {
-			mp.pause();
+			if (mp != null)
+				mp.pause();
 		}
 	}
 
@@ -174,7 +180,8 @@ public class MainActivity extends ListActivity {
 	 */
 	protected void onResume() {
 		super.onResume();
-		mp.start();
+		if (mp != null)
+			mp.start();
 	}
 
 	@Override
@@ -193,8 +200,27 @@ public class MainActivity extends ListActivity {
 		case R.id.random:
 			playMode = 4;
 			break;
+		case R.id.selectFile:
+			Intent intent = new Intent(this, FileChoose.class);
+			this.startActivityForResult(intent, REQUESTCODE);
+			break;
 		}
 		return true;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == Activity.RESULT_CANCELED) {
+			toast("未打开任何文件");
+		} else if (resultCode == Activity.RESULT_OK
+				&& requestCode == REQUESTCODE) {
+			selectFilePath = data.getStringExtra(MUSICFILEPATH);
+			toast("打开文件："+selectFilePath);
+		}
+	}
+
+	private void toast(CharSequence hint) {
+		Toast.makeText(this.getBaseContext(), hint, Toast.LENGTH_SHORT).show();
 	}
 
 	public class MyListListener implements OnItemClickListener {
@@ -311,10 +337,10 @@ public class MainActivity extends ListActivity {
 	private int getRandomSong() {
 		// TODO Auto-generated method stub
 		Random random = new Random();
-//		for (int i = 0; i < fileList.size(); i++) {
-			int num = Math.abs(random.nextInt()) % fileList.size();
-			System.out.println(num);
-//		}
+		// for (int i = 0; i < fileList.size(); i++) {
+		int num = Math.abs(random.nextInt()) % fileList.size();
+		System.out.println("random num: " + num);
+		// }
 		return num;
 	}
 

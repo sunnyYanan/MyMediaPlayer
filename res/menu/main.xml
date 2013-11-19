@@ -24,7 +24,11 @@
          <item
             android:id="@+id/random"
             android:showAsAction="ifRoom"
-            android:title="@string/listSeq"/>
+            android:title="@string/random"/>
+         <item
+            android:id="@+id/selectFile"
+            android:showAsAction="ifRoom"
+            android:title="@string/selectFile"/>
     </group>
 
 </menu>

@@ -9,10 +9,16 @@
     <string name="volumeShow"> 音量调节 </string>
     <string name="play"> play </string>
     <string name="after">〉〉</string>
-    <string name="first">|〈〈</string>
-    <string name="last">〉〉|</string>
+    <string name="first">|〈</string>
+    <string name="last">〉|</string>
     <string name="oneCycle">单曲循环</string>
     <string name="listCycle">列表循环</string>
     <string name="listSeq">顺序播放</string>
+    <string name="random">随机播放</string>
+    <string name="selectFile">选择文件</string>
+    <string name="title_activity_file_choose">FileChoose</string>
+    <string name="ok">OK</string>
+    <string name="back">返回</string>
+    <string name="noneFile">空</string>
 
 </resources>

@@ -7,10 +7,10 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
-     <!-- 监听电话呼出 -->  
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>  
-    <!-- 监听电话状态改变 -->  
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />  
+    <!-- 监听电话呼出 -->
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <!-- 监听电话状态改变 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -25,6 +25,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.zhang.mymediaplayer.FileChoose"
+            android:label="@string/title_activity_file_choose"
+            android:parentActivityName="com.zhang.mymediaplayer.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.zhang.mymediaplayer.MainActivity" />
         </activity>
     </application>
 
