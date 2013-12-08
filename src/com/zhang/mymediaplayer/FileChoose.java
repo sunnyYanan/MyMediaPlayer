@@ -5,14 +5,21 @@ import java.util.ArrayList;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zhang.mediaplayer.model.FileInfo;
 import com.zhang.mediaplayer.service.MyFileAdapter;
@@ -20,49 +27,107 @@ import com.zhang.mediaplayer.service.MyFileAdapter;
 public class FileChoose extends Activity {
 	TextView nowPath;
 	GridView filesView;
-	Button ok;
+	// Button ok;
 	Button back;
-	
-	String rootPath="/";
+
+	String rootPath = "/";
 	String lastFilePath;
-	
+
 	ArrayList<FileInfo> fileInfos;
-	
+	MyFileAdapter adapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_file_choose);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
+
 		fileInfos = new ArrayList<FileInfo>();
-		
+
 		nowPath = (TextView) this.findViewById(R.id.nowPath);
 		filesView = (GridView) this.findViewById(R.id.allFiles);
-		ok = (Button) this.findViewById(R.id.ok);
+		// ok = (Button) this.findViewById(R.id.ok);
 		back = (Button) this.findViewById(R.id.back);
-		
+		back.setOnClickListener(new MyClickListener());
+
 		filesView.setEmptyView(findViewById(android.R.id.empty));
-//		filesView.setNumColumns(GridView.AUTO_FIT);
+		// filesView.setNumColumns(GridView.AUTO_FIT);
+		filesView.setOnItemClickListener(new MyOnItemClickListener());
 		filesView.setNumColumns(4);
-		
-		updataFileView(rootPath);
+
+		setGridViewAdapter(rootPath);
+//		updateFileView(rootPath);
 	}
 
-	private void updataFileView(String path) {
+	private void setGridViewAdapter(String rootPath) {
+		// TODO Auto-generated method stub
+		updateFileView(rootPath);
+		adapter = new MyFileAdapter(this, fileInfos);
+		filesView.setAdapter(adapter);
+	}
+
+	private class MyOnItemClickListener implements OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			// TODO Auto-generated method stub
+			FileInfo fileInfo = (FileInfo) (((MyFileAdapter) arg0.getAdapter())
+					.getItem(arg2));
+			if (fileInfo.isDir()) {
+				updateFileView(fileInfo.getFilePath());
+			} else if (fileInfo.isMusicFile()) {
+				Intent intent = new Intent();
+				intent.putExtra(MainActivity.MUSICFILEPATH,
+						fileInfo.getFilePath());
+				setResult(RESULT_OK, intent);
+				finish();
+			} else {
+				toast("文件类型错误");
+			}
+		}
+
+	}
+
+	private void toast(CharSequence hint) {
+		Toast.makeText(this, hint, Toast.LENGTH_SHORT).show();
+	}
+
+	private class MyClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			if(lastFilePath.equals(rootPath))
+				return;
+			File file = new File(lastFilePath);
+			File parent = file.getParentFile();
+			updateFileView(parent.getAbsolutePath());
+		}
+
+	}
+
+	private void updateFileView(String path) {
 		// TODO Auto-generated method stub
 		nowPath.setText(path);
+		lastFilePath = path;
 		File file = new File(path);
 		File[] files = file.listFiles();
-		for(int i=0; i<files.length; i++) {
-			if(files[i].isHidden())
-				continue;
+		if (!fileInfos.isEmpty())
+			fileInfos.clear();
+		if (files == null)
+			return;
+		for (int i = 0; i < files.length; i++) {
+//			if (files[i].isHidden())
+//				continue;
 			boolean isDir = files[i].isDirectory();
-			FileInfo fileInfo = new FileInfo(files[i].getName(), files[i].getAbsolutePath(),isDir);
+			FileInfo fileInfo = new FileInfo(files[i].getName(),
+					files[i].getAbsolutePath(), isDir);
 			fileInfos.add(fileInfo);
 		}
-		MyFileAdapter adapter = new MyFileAdapter(this, fileInfos);
-		filesView.setAdapter(adapter);
+		if (adapter != null)
+			adapter.notifyDataSetChanged();
 	}
 
 	/**

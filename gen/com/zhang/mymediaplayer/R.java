@@ -28,31 +28,30 @@ public final class R {
         public static final int mp3=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f080012;
-        public static final int after=0x7f08000c;
+        public static final int action_settings=0x7f080011;
+        public static final int after=0x7f08000b;
         public static final int allFiles=0x7f080001;
         public static final int back=0x7f080002;
-        public static final int before=0x7f08000a;
-        public static final int controlButton=0x7f080008;
-        public static final int fileName=0x7f080005;
-        public static final int filePath=0x7f080011;
-        public static final int filePic=0x7f080004;
-        public static final int first=0x7f080009;
-        public static final int introduction=0x7f080006;
-        public static final int last=0x7f08000d;
-        public static final int listCycle=0x7f080015;
-        public static final int listSeq=0x7f080016;
+        public static final int before=0x7f080009;
+        public static final int controlButton=0x7f080007;
+        public static final int fileName=0x7f080004;
+        public static final int filePath=0x7f080010;
+        public static final int filePic=0x7f080003;
+        public static final int first=0x7f080008;
+        public static final int introduction=0x7f080005;
+        public static final int last=0x7f08000c;
+        public static final int listCycle=0x7f080014;
+        public static final int listSeq=0x7f080015;
         public static final int nowPath=0x7f080000;
-        public static final int ok=0x7f080003;
-        public static final int oneCycle=0x7f080014;
-        public static final int play=0x7f08000b;
-        public static final int playMode=0x7f080013;
-        public static final int random=0x7f080017;
-        public static final int seekBar=0x7f080007;
-        public static final int selectFile=0x7f080018;
-        public static final int volume=0x7f08000f;
-        public static final int volumeControl=0x7f08000e;
-        public static final int volumeValue=0x7f080010;
+        public static final int oneCycle=0x7f080013;
+        public static final int play=0x7f08000a;
+        public static final int playMode=0x7f080012;
+        public static final int random=0x7f080016;
+        public static final int seekBar=0x7f080006;
+        public static final int selectFile=0x7f080017;
+        public static final int volume=0x7f08000e;
+        public static final int volumeControl=0x7f08000d;
+        public static final int volumeValue=0x7f08000f;
     }
     public static final class layout {
         public static final int activity_file_choose=0x7f030000;

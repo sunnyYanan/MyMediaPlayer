@@ -37,7 +37,7 @@ import android.widget.TextView;
 
 public class MainActivity extends ListActivity {
 	private static final int REQUESTCODE = 1;
-	private static final String MUSICFILEPATH = "path";
+	public static final String MUSICFILEPATH = "path";
 	Button previous, play, next, first, last;
 	ListView list;
 	SeekBar sb, volume;
@@ -54,6 +54,8 @@ public class MainActivity extends ListActivity {
 	AudioManager am;
 	int currentVolume;
 	int maxVolume;
+	BroadcastReceiver sendBroadcastReceiver;
+	SimpleAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +75,7 @@ public class MainActivity extends ListActivity {
 
 		findSongs();
 
-		if (fileList.size() == 0) {
-			previous.setEnabled(false);
-			next.setEnabled(false);
-			play.setEnabled(false);
-		}
+		changeButtonState();
 		previous.setOnClickListener(new MyButtonListener());
 		next.setOnClickListener(new MyButtonListener());
 		play.setOnClickListener(new MyButtonListener());
@@ -143,7 +141,8 @@ public class MainActivity extends ListActivity {
 
 		// 播出电话暂停音乐播放
 		filter.addAction("android.intent.action.NEW_OUTGOING_CALL");
-		registerReceiver(new PhoneListener(), filter);
+		sendBroadcastReceiver = new PhoneListener();
+		registerReceiver(sendBroadcastReceiver, filter);
 
 		// 创建一个电话服务
 		TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
@@ -215,7 +214,34 @@ public class MainActivity extends ListActivity {
 		} else if (resultCode == Activity.RESULT_OK
 				&& requestCode == REQUESTCODE) {
 			selectFilePath = data.getStringExtra(MUSICFILEPATH);
-			toast("打开文件："+selectFilePath);
+			toast("打开文件：" + selectFilePath);
+			
+			File file = new File(selectFilePath);
+			fileName.add(file.getName());
+			filePath.add(file.getPath());
+			Map<String, String> dataMap = new HashMap<String, String>();
+			dataMap.put("name", file.getName());
+			dataMap.put("path", file.getPath());
+			fileList.add(dataMap);
+			adapter.notifyDataSetChanged();
+			changeButtonState();
+		}
+	}
+
+	private void changeButtonState() {
+		// TODO Auto-generated method stub
+		if (fileList.size() == 0) {
+			previous.setEnabled(false);
+			next.setEnabled(false);
+			play.setEnabled(false);
+			last.setEnabled(false);
+			first.setEnabled(false);
+		}else {
+			previous.setEnabled(true);
+			next.setEnabled(true);
+			play.setEnabled(true);
+			last.setEnabled(true);
+			first.setEnabled(true);
 		}
 	}
 
@@ -376,9 +402,9 @@ public class MainActivity extends ListActivity {
 			System.out.println(fileList.get(i).get("name") + " "
 					+ fileList.get(i).get("path"));
 		}
-		SimpleAdapter adapter = new SimpleAdapter(this, fileList,
-				R.layout.song_item, new String[] { "name", "path" }, new int[] {
-						R.id.fileName, R.id.filePath });
+		adapter = new SimpleAdapter(this, fileList, R.layout.song_item,
+				new String[] { "name", "path" }, new int[] { R.id.fileName,
+						R.id.filePath });
 		this.setListAdapter(adapter);
 	}
 
@@ -435,5 +461,11 @@ public class MainActivity extends ListActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	protected void onStop() {
+		unregisterReceiver(sendBroadcastReceiver);
+		super.onStop();
 	}
 }
